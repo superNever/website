@@ -1,0 +1,75 @@
+{
+  "name": "website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon bin/run",
+<<<<<<< HEAD
+=======
+    "clean": "rimraf dist&& rimraf public-prod/",
+    "web": "npm-run-all -s clean webpack",
+    "webpack": "cross-env NODE_ENV=development webpack --config ./config/webpack.config.js",
+    "dev": "npm-run-all -s clean koa",
+>>>>>>> webpack 前端静态编译
+    "koa": "runkoa bin/www",
+    "pm2": "pm2 start bin/run ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "co": "^4.6.0",
+    "debug": "^2.2.0",
+    "ejs": "~2.3.3",
+    "koa": "^2.0.0",
+    "koa-bodyparser": "^2.0.1",
+    "koa-convert": "^1.2.0",
+    "koa-json": "^1.1.1",
+    "koa-logger": "^1.3.0",
+    "koa-onerror": "^1.2.1",
+    "koa-router": "^7.0.0",
+    "koa-static": "^2.0.0",
+    "koa-views": "^5.0.1",
+    "runkoa": "^1.3.1"
+  },
+  "devDependencies": {
+<<<<<<< HEAD
+    "nodemon": "^1.8.1"
+=======
+    "babel-cli": "^6.11.4",
+    "babel-core": "^6.11.4",
+    "babel-eslint": "^6.1.2",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-runtime": "^6.12.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-es2015-loose": "^7.0.0",
+    "babel-preset-stage-3": "^6.11.0",
+    "babel-runtime": "^6.11.6",
+    "cross-env": "^3.1.4",
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "glob": "^7.1.1",
+    "koa-webpack-dev-middleware": "^1.3.0",
+    "koa-webpack-hot-middleware": "^1.0.3",
+    "nodemon": "^1.8.1",
+    "npm-run-all": "^4.0.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.14.0"
+>>>>>>> webpack 前端静态编译
+  },
+  "description": "website blog",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/superNever/website.git"
+  },
+  "keywords": [
+    "supernever",
+    "website"
+  ],
+  "author": "supernever",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/superNever/website/issues"
+  },
+  "homepage": "https://github.com/superNever/website#readme"
+}
