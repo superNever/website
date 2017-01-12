@@ -4,6 +4,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin')
+const ejsPlugin = require('ejs-webpack-plugin');
 
 
 const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true';
@@ -11,31 +12,27 @@ const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&t
 const env = process.env.NODE_ENV || 'development';
 const debug = env !== 'production';
 
-console.log(debug)
-var getEntry = function (pathName) {
-  var entry = {};
-  console.log(pathName.split('/public')[1])
+let getEntry = function (pathName) {
+  let entry = {};
   fs.readdirSync(pathName,'utf-8').forEach(function (name) {
 	    const filename = path.basename(name,'.js')
 	    const files = [path.join(pathName,filename)]
 	    if(debug){
 	      files.push(hotMiddlewareScript)
 	    }
-	    entry[pathName.split('/public')[1]+filename] = files
+	    entry[pathName.split('/public-dev')[1]+filename] = files
   	})
-	console.log(entry)
   	return entry;
 }
 
-
 const config = {
     devtool: debug ? 'eval-source-map' : 'source-map',
-    entry: getEntry(path.join(__dirname,'../public/javascripts/')),
+    entry: getEntry(path.join(__dirname,'../public-dev/javascripts/')),
     output: {
-        path: path.join(__dirname, '../public-prod'),
-        filename: '[name]_[hash:5].js'
+        path: path.join(__dirname, '../public'),
+        filename: '[name]_[hash:5].js',
         // chunkFilename: "./[name]/[id].chunk.js",
-        // publicPath: '/'
+        publicPath: '/'
     },
     plugins: [
         new webpack.DefinePlugin({
@@ -52,7 +49,22 @@ const config = {
             minChunks: 2
             // chunks: ["index", "about"]
         }),
-        new ExtractTextPlugin('/stylesheets/[hash:8].[name].css')
+        new ExtractTextPlugin('/stylesheets/[hash:8].[name].css'),
+        new ejsPlugin({
+        	context:__dirname,
+        	entry:{
+    	       '../views/entry/index.ejs':{
+    	         'js':['index','commons'],
+    	         'css':['index'],
+    	         'output':'./views' //默认同Key
+    	       },
+    	       '../views/entry/user.ejs':{
+    	         'js':['user','commons'],
+    	         'css':['user'],
+    	         'output':'./views'
+    	       }
+    	     }
+        })
     ],
     module: {
         // preLoaders: [
@@ -63,9 +75,15 @@ const config = {
             loader: 'babel',
             // include: path.join(__dirname, '../public'),
             exclude: /node_modules/
+        },{
+            test: /\.(tpl|ejs)$/,
+            loader: 'ejs',
         }, {
             test: /\.css$/,
             loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+        }, {
+            test: /\.less$/,
+            loader: ExtractTextPlugin.extract('style-loader', 'css-loader!less-loader')
         }, {
             test: /\.(jpe?g|png|gif)$/i,
             loaders: [
@@ -81,7 +99,7 @@ const config = {
     //   configFile: './.eslintrc.json'
     // },
 	resolve: {
-		extensions: ['', '.js', '.less', '.css']
+		extensions: ['', '.js', '.jsx', '.json']
 	}
 };
 if (!debug) {
@@ -91,5 +109,4 @@ if (!debug) {
         }
     }))
 }
-console.log(config)
 module.exports = config

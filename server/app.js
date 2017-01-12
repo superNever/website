@@ -1,5 +1,6 @@
 const Koa = require('koa');
 const app = new Koa();
+const path = require('path');
 const router = require('koa-router')();
 const views = require('koa-views');
 const co = require('co');
@@ -9,8 +10,8 @@ const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
 
-const index = require('./routes/index');
-const users = require('./routes/users');
+const index = require('../routes/index');
+const users = require('../routes/users');
 
 // middlewares
 app.use(convert(bodyparser));
@@ -18,7 +19,7 @@ app.use(convert(json()));
 app.use(convert(logger()));
 app.use(require('koa-static')(__dirname + '/public'));
 
-app.use(views(__dirname + '/views', {
+app.use(views(path.join(__dirname ,'../views'), {
   extension: 'ejs'
 }));
 
